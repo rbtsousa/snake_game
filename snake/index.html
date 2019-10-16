@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jogo da cobrinha</title>
+</head>
+<body>
+ 
+    <canvas id="stage" width="600" height="600"></canvas>
+    <script type="text/javascript">
+       
+        window.onload = function(){
+ 
+            var stage = document.getElementById('stage');
+            var ctx = stage.getContext("2d");
+            document.addEventListener("keydown", keyPush);
+            setInterval(game, 80);
+ 
+            const vel = 1;
+ 
+            var velocidade_x = 0;
+            var velocidade_y = 0;
+            var posicao_x =10;
+            var posicao_y = 15;
+            var tamanho_p = 30;
+            var quantidade_p = 20;
+            var maca_x = 15;
+            var maca_y=15;
+ 
+            var trilha = [];
+            rabo = 5;
+ 
+            function game(){
+                posicao_x += velocidade_x;
+                posicao_y += velocidade_y;
+                if (posicao_x <0) {
+                    posicao_x = quantidade_p-1;
+                }
+                if (posicao_x > quantidade_p-1) {
+                    posicao_x = 0;
+                }
+                if (posicao_y < 0) {
+                    posicao_y = quantidade_p-1;
+                }
+                if (posicao_y > quantidade_p-1) {
+                    posicao_y = 0;
+                }
+ 
+                ctx.fillStyle = "black";
+                ctx.fillRect(0,0, stage.width, stage.height);
+ 
+                ctx.fillStyle = "red";
+                ctx.fillRect(maca_x*tamanho_p, maca_y*tamanho_p, tamanho_p,tamanho_p);
+ 
+                ctx.fillStyle = "gray";
+                for (var i = 0; i < trilha.length; i++) {
+                    ctx.fillRect(trilha[i].x*tamanho_p, trilha[i].y*tamanho_p, tamanho_p-1,tamanho_p-1);
+                    if (trilha[i].x == posicao_x && trilha[i].y == posicao_y)
+                    {
+                        velocidade_x = velocidade_y=0;
+                        rabo =5;
+                    }
+                }
+ 
+                trilha.push({x:posicao_x,y:posicao_y })
+                while (trilha.length > rabo) {
+                    trilha.shift();
+                }
+ 
+                if (maca_x==posicao_x && maca_y==posicao_y){
+                    rabo++;
+                    maca_x = Math.floor(Math.random()*quantidade_p);
+                    maca_y = Math.floor(Math.random()*quantidade_p);
+                }
+ 
+            }
+ 
+            function keyPush(event){
+ 
+                switch (event.keyCode) {
+                    case 37: // Left
+                        velocidade_x = -vel;
+                        velocidade_y = 0;
+                        break;
+                    case 38: // up
+                        velocidade_x = 0;
+                        velocidade_y = -vel;
+                        break;
+                    case 39: // right
+                        velocidade_x = vel;
+                        velocidade_y = 0;
+                        break;
+                    case 40: // down
+                        velocidade_x = 0;
+                        velocidade_y = vel;
+                        break;         
+                    default:
+                       
+                        break;
+                }
+ 
+ 
+            }
+ 
+        }
+ 
+    </script>
+</body>
+</html>
